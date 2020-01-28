@@ -4,15 +4,16 @@ from .database import db
 import os
 from .models.models import User,Post,Profile,Comments
 from flask_login import login_user,LoginManager,login_required,current_user,logout_user
+from flask_bcrypt import Bcrypt
 login_manager = LoginManager()
 login_manager.init_app(app)
-
+bcrypt = Bcrypt(app)
 
 @app.route("/",methods=["GET","POST"])
 def Index():
     if request.method == "POST":
         user = User.query.filter_by(username=request.form["email"]).first()
-        if user is not None and request.form["email"] == user.username and request.form["password"] == user.password :
+        if user is not None and request.form["email"] == user.username and bcrypt.check_password_hash(user.password,request.form["password"]):
             login_user(user)
             return redirect("/dashboard")
         else :
@@ -25,9 +26,11 @@ def Index():
 @app.route("/register",methods=["GET","POST"])
 def register():
     if request.method == "POST":
+        pwhash = bcrypt.generate_password_hash(request.form["password"])
         user = User(fullname=request.form["fullname"],
                     username=request.form["email"],
-                    password=request.form["password"])
+                    password=pwhash
+                    )
         db.session.add(user)
         db.session.commit()
         return redirect("/")
