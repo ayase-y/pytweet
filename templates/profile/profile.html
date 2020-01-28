@@ -1,0 +1,248 @@
+{% extends "./layout/layout.html"%}
+
+{% block maincontent%}
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3">
+
+        <!-- Profile Image -->
+        <div class="card card-primary card-outline">
+          <div class="card-body box-profile">
+            <div class="text-center">
+              <img class="profile-user-img img-fluid img-circle"
+                    src="{{url_for('static',filename='dist/img/user4-128x128.jpg')}}"
+                    alt="User profile picture">
+            </div>
+            <h3 class="profile-username text-center">{{user.fullname}}</h3>
+            <p class="text-muted text-center">Software Engineer</p>
+
+            <ul class="list-group list-group-unbordered mb-3">
+              <li class="list-group-item">
+                <b>Followers</b> <a class="float-right">1,322</a>
+              </li>
+              <li class="list-group-item">
+                <b>Following</b> <a class="float-right">543</a>
+              </li>
+              <li class="list-group-item">
+                <b>Friends</b> <a class="float-right">13,287</a>
+              </li>
+            </ul>
+
+            <!-- <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a> -->
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+        <!-- About Me Box -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">About Me</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <strong><i class="fas fa-book mr-1"></i> First Name</strong>
+            <p class="text-muted">
+              {{profile.first_name}}
+            </p>
+            <hr>
+
+            <strong><i class="fas fa-map-marker-alt mr-1"></i> Second Name</strong>
+            <p class="text-muted">
+              {{profile.second_name}}
+            </p>
+            <hr>
+            
+            <strong><i class="fas fa-map-marker-alt mr-1"></i> Birth Day</strong>
+            <p class="text-muted">
+              {{profile.birth_day}}
+            </p>
+            <hr>
+
+            <strong><i class="fas fa-map-marker-alt mr-1"></i> Address</strong>
+            <p class="text-muted">
+              {{profile.address}}
+            </p>
+            <hr>
+
+            <strong><i class="fas fa-map-marker-alt mr-1"></i> Occupation</strong>
+            <p class="text-muted">
+              {{profile.occupation}}
+            </p>
+            <hr>
+
+            <strong><i class="fas fa-map-marker-alt mr-1"></i> Skills</strong>
+            <p class="text-muted">
+              {{profile.skills}}
+            </p>
+            <hr>
+
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      
+      <!-- /.col -->
+      <div class="col-md-9">
+        <div class="card">
+            <!-- /.card-header1 -->
+            <div class="card-header p-2">
+              <ul class="nav nav-pills">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#activity" data-toggle="tab">Activity</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#settings" data-toggle="tab">Settings</a>
+                </li>
+              </ul>
+            </div>
+            <!-- /.card-header1 -->
+
+            <!-- /.card-header2 -->
+            <!-- <div class="card-header p-2">
+              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="pills-activity-tab" data-toggle="pill" href="#pills-activity" role="tab" aria-controls="pills-activity" aria-selected="true">Activity</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-settings-tab" data-toggle="pill" href="#pills-settings" role="tab" aria-controls="pills-settings" aria-selected="false">Settings</a>
+                </li>
+              </ul>
+            </div> -->
+            <!-- /.card-header2 -->
+
+          <!-- <div class="card-body"> -->
+          <div class="card-body">
+            <div class="tab-content">
+            <!-- <div class="tab-content"  id="pills-tabContent"> -->
+              <div class="active tab-pane" id="activity">
+                <!-- <div class="tab-pane fade show active" id="pills-activity" role="tabpanel" aria-labelledby="pills-activity-tab"> -->
+                  <form action="/tweet" class="form-horizontal" method="post">
+                    <div class="input-group input-group-sm mb-0">
+                      <input class="form-control form-control-sm" name="tweet" placeholder="put your tweet">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-danger">Tweet</button>
+                      </div>
+                    </div>
+                  </form>
+                  <hr>
+                  {% for post in posts %}
+                  <div class="post">
+                  <div class="user-block">
+                    <img class="img-circle img-bordered-sm" src="{{url_for('static',filename='dist/img/user1-128x128.jpg')}}" alt="user image">
+                    <span class="username">
+                      <a href="#">{{post.author.fullname}}</a>
+                      <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                    </span>
+                    <span class="description">Shared publicly - 7:30 PM today</span>
+                  </div>
+                  <!-- /.user-block -->
+                  <p>
+                    {{post.post}}
+                  </p>
+                  <p>
+                    <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
+                    <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
+                    <span class="float-right">
+                      <a href="#" class="link-black text-sm">
+                        <i class="far fa-comments mr-1"></i> Comments (5)
+                      </a>
+                    </span>
+                  </p>
+                  {% for comment in post.comments %}
+                  <div class="post">
+                  <div class="user-block">
+                    <img class="img-circle img-bordered-sm" src="{{url_for('static',filename='dist/img/user1-128x128.jpg')}}" alt="user image">
+                    <span class="username">
+                      <a href="#">{{comment.author.fullname}}</a>
+                      <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                    </span>
+                    <span class="description">Shared publicly - 7:30 PM today</span>
+                  </div>
+                  <!-- /.user-block -->
+                  <p>
+                    {{comment.comment}}
+                  </p>
+                  {% endfor %}
+                  <form action="/comment" class="form-horizontal" method="post">
+                    <div class="input-group input-group-sm mb-0">
+                      <input type="text" name="id" value="{{post.id}}" hidden>
+                      <input class="form-control form-control-sm" name="comment" type="text" placeholder="Type a comment">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Comment</button>
+                      </div>
+                    </div>
+                  </form>
+                  </div> 
+                  {% endfor %}
+                  </div>
+              </div>
+            
+            
+              <div class="tab-pane" id="settings">
+              <!-- <div class="tab-pane fade" id="pills-settings" role="tabpanel" aria-labelledby="pills-settings-tab">  -->
+                <form action="/about" class="form-horizontal" method="post">
+                  <div class="form-group row">
+                    <label for="inputFirstname" class="col-sm-2 col-form-label">First Name</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="first_name" class="form-control" id="inputFirstname" placeholder="First Name">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputSecondname" class="col-sm-2 col-form-label">Second Name</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="second_name" class="form-control" id="inputSecondname" placeholder="Second Name">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputBirthday" class="col-sm-2 col-form-label">Birth Day</label>
+                    <div class="col-sm-10">
+                      <input type="date" name="birth_day" class="form-control" id="inputBirthday" placeholder="Birth Day">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputAddress" class="col-sm-2 col-form-label">Address</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="address" class="form-control" id="inputAddress" placeholder="Address">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputOccupation" class="col-sm-2 col-form-label">Occupation</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="occupation" class="form-control" id="inputOccupation" placeholder="Occupation">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="skills" class="form-control" id="inputSkills" placeholder="Skills">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="offset-sm-2 col-sm-10">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="offset-sm-2 col-sm-10">
+                      <button type="submit" class="btn btn-danger">Submit</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock %}
